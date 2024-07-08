@@ -1,0 +1,125 @@
+.main-products {
+  padding: 2vw 8vw 5vw 8vw;
+  text-align: left;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: black;
+  color: white;
+}
+
+.mainline {
+  margin-top: 20px;
+  height: 2px;
+  border: none;
+  background-color: gray;
+}
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5rem;
+  /* margin-top: 50px; */
+  margin: 50px auto;
+}
+
+.cards {
+  background-color: transparent;
+  border: 1px solid gray;
+  width: 300px;
+  overflow: hidden;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cards .image {
+  width: 100%;
+  height: 200px;
+}
+
+.cards .image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.contents {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px;
+}
+
+.contents .name {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.quantity {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+}
+
+.quantity button {
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.otherline {
+  width: 100%;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.quantity input[type="text"] {
+  width: 35px;
+  height: 30px;
+  margin: 5px 5px;
+}
+
+.contents1 {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  /* justify-content: center; */
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-cart {
+  background-color: #00906d;
+  color: black;
+  padding: 10px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+}
+
+.btn-cart:hover
+{
+    cursor: pointer;
+    background-color: #00b689;
+}
+
+.cartoption {
+  margin-top: 10px;
+  margin-left: 5px;
+}
+
+.dropdown
+{
+  background-color: #00b689;
+  outline: none;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.dropdown option
+{
+  background-color: white;
+}
