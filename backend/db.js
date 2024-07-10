@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const url = `mongodb+srv://irtaza009:irtaza009@cluster0.zops4jh.mongodb.net/foodhutmernproject?retryWrites=true&w=majority&appName=Cluster0`;
 
-
 const connection_db = async () => {
   try {
     await mongoose.connect(url, {
@@ -13,15 +12,21 @@ const connection_db = async () => {
 
     const db = mongoose.connection.db;
     const collection = db.collection("food_items");
-    const cursor = await collection.find({})
+    const cursor = await collection.find({});
     const arr = new Array();
-    await cursor.forEach(document => {
-        arr.push(document)
+    await cursor.forEach((document) => {
+      arr.push(document);
     });
-    // console.log(arr)
+    global.food_items = arr;
 
-    
-
+    const foodCategoryCollection = await db.collection("food_category");
+    const foodCategory = await foodCategoryCollection.find({});
+    const arr2 = new Array();
+    await foodCategory.forEach((document) => {
+      arr2.push(document);
+    });
+    global.food_category = arr2;
+    // console.log(global.food_items)
   } catch (error) {
     console.error("MongoDB connection error:", error);
   }
