@@ -2,10 +2,13 @@ import React from "react";
 import Cards from "./Cards";
 import "./products.css";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 
 const Products = () => {
   const [foodCategory, setfoodCategory] = useState([]);
   const [foodItem, setfoodItem] = useState([]);
+  // const searchvalue = useSelector((state) => state.counter.value);
 
   useEffect(() => {
     LoadData();
@@ -34,7 +37,7 @@ const Products = () => {
                 <div className="row">
                   {foodItem.length > 0 &&
                     foodItem
-                      .filter((item) => item.CategoryName === Cat.CategoryName)
+                      .filter((item) => (item.CategoryName === Cat.CategoryName) )
                       .map((filteredItem) => {
                         return (
                           <div key={filteredItem.id}>
