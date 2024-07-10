@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
   try {
     let userData = await user.findOne({ email });
 
-    console.log(userData);
+    // console.log(userData);
     if (!userData) {
       return res.status(400).json({ success: false });
     }

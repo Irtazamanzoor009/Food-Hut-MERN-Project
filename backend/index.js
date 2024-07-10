@@ -19,6 +19,10 @@ app.use('/signup', require("./routes/createuser"), (req,res)=>{
   console.log("User faied to create")
 });
 
+app.use('/signin', require("./routes/createuser"), (req,res)=>{
+  console.log("User faied to create")
+});
+
 app.use('/food', require("./routes/displaydata"), (req,res)=>{
   console.log("Log in falied")
 })
