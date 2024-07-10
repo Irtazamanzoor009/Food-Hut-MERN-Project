@@ -4,7 +4,7 @@ const initialState = {
   value: '',
 }
 
-export const counterSlice = createSlice({
+export const SearchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
@@ -15,6 +15,6 @@ export const counterSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { SetSearchValue } = counterSlice.actions
+export const { SetSearchValue } = SearchSlice.actions
 
-export default counterSlice.reducer
+export default SearchSlice.reducer  

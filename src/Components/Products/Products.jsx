@@ -2,13 +2,12 @@ import React from "react";
 import Cards from "./Cards";
 import "./products.css";
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
+import { useSelector } from "react-redux";
 
 const Products = () => {
   const [foodCategory, setfoodCategory] = useState([]);
   const [foodItem, setfoodItem] = useState([]);
-  // const searchvalue = useSelector((state) => state.counter.value);
+  const searchvalue = useSelector((state) => state.search.value);
 
   useEffect(() => {
     LoadData();
@@ -37,11 +36,17 @@ const Products = () => {
                 <div className="row">
                   {foodItem.length > 0 &&
                     foodItem
-                      .filter((item) => (item.CategoryName === Cat.CategoryName) )
+                      .filter(
+                        (item) =>
+                          item.CategoryName === Cat.CategoryName &&
+                          item.name
+                            .toLowerCase()
+                            .includes(searchvalue.toLowerCase())
+                      )
                       .map((filteredItem) => {
                         return (
                           <div key={filteredItem.id}>
-                            <Cards items={filteredItem}/>
+                            <Cards items={filteredItem} />
                           </div>
                         );
                       })}

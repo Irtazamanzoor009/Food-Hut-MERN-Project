@@ -1,14 +1,13 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./slider.css";
 import image1 from "./1.jpg";
 import image2 from "./2.jpg";
 import image3 from "./3.jpg";
-import { useSelector, useDispatch } from "react-redux";
-import SetSearchValue from '../../redux/searchvalue/searchValue.js'
+import { useDispatch } from "react-redux";
+import {SetSearchValue} from '../../redux/searchvalue/searchValue.js'
 
 const Slider = () => {
-  const [search, setsearch] = useState('hr');
   const dispatch = useDispatch()
   
 
@@ -27,10 +26,7 @@ const Slider = () => {
 
   const handleSearch = (e)=>{
     const value = e.target.value;
-    setsearch(value)
     dispatch(SetSearchValue(value))
-    const searchvalue = useSelector((state) => state.search.value);
-    console.log(searchvalue)
   }
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -53,8 +49,7 @@ const Slider = () => {
           </button>
           <div className="search-container">
             <div className="inputtext">
-              <input  type="search" placeholder="Search..." value={search} onChange={handleSearch} />
-              <i className="fa-solid fa-magnifying-glass"></i>
+              <input  type="search" placeholder="Search..." onChange={handleSearch} />
             </div>
           </div>
         </div>
