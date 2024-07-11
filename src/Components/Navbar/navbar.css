@@ -87,3 +87,54 @@ ul li a
     color: red;
     font-weight: bold;
 }
+
+.btn-other
+{
+    display: flex;
+    align-items: center;
+}
+
+.cart-btn
+{
+    display: flex;
+}
+
+.other-sate
+{
+
+    position: relative;
+}
+
+.cart-btn .hero-btn
+{
+    background: transparent;
+    padding: 0;
+    margin-right: 10px;
+    position: relative;
+}
+
+.cart-btn .hero-btn img
+{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.other-sate1 img:hover
+{
+    background-color: aliceblue;
+    border-radius: 10px;
+}
+
+.cart-btn p
+{
+    background: red;
+    margin: 0;
+    border-radius: 50%;
+    color: white;
+    padding: 2px 6px;
+    position: absolute;
+    top: 0px; 
+    right: -5px; 
+    font-size: 12px; 
+}

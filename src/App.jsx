@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Cart from "./Components/Cart/Cart";
 import HomePage from "./Components/HomePage/HomePage";
 import SignIn from "./Components/Login/SignIn";
 import SignUp from "./Components/Login/SignUp";
@@ -12,6 +13,7 @@ function App() {
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/signin" element={<SignIn />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
+          <Route path="/cart" element={<Cart/>}></Route>
         </Routes>
       </div>
     </Router>

@@ -1,6 +1,9 @@
 import React from "react";
 import "./navbar.css";
 import { NavLink, useNavigate } from "react-router-dom";
+import cartimage from './cart.png'
+import { selectCartLength } from "../../redux/CartFunctionality/cartfunctions.js";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -13,9 +16,14 @@ const Navbar = () => {
     navigate("/signup");
   };
 
-  const handleLogoutClick = ()=>{
-    localStorage.removeItem("authToken")
+  const handleLogoutClick = () => {
+    localStorage.removeItem("authToken");
     navigate("/");
+  };
+
+  const handleCartClick = ()=>
+  {
+    navigate('/cart');
   }
 
   return (
@@ -41,9 +49,18 @@ const Navbar = () => {
         </div>
         <div className="buttons">
           {localStorage.getItem("authToken") ? (
-            <div className="btns">
-              <button className="hero-btn">My Cart</button>
-              <button className="hero-btn logout" onClick={handleLogoutClick}>Log Out</button>
+            <div className="btns btn-other">
+              <div className="cart-btn other-sate">
+                <button onClick={handleCartClick} className="hero-btn other-sate1">
+                  <img src={cartimage} />
+                  <p>{useSelector(selectCartLength)}</p>
+                </button>
+              </div>
+              <div className="other">
+                <button className="hero-btn logout" onClick={handleLogoutClick}>
+                  Log Out
+                </button>
+              </div>
             </div>
           ) : (
             <div className="btns">

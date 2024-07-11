@@ -3,12 +3,12 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addItem,
-  removeItem,
-  clearCart,
+  selectCartItems,
+  updateItem,
 } from "../../redux/CartFunctionality/cartfunctions.js";
 
 const Cards = (props) => {
-  const cart = useSelector((state) => state.cart)
+  const cart = useSelector(selectCartItems) || [];
   const dispatch = useDispatch();
   const sizeRef = useRef();
 
@@ -18,23 +18,58 @@ const Cards = (props) => {
   const [qty, setqty] = useState(1);
   const [size, setsize] = useState(1);
 
-  const finalPrice = qty * parseInt(options[size])
+  const originalPrice = parseInt(options[size]);
+  const finalPrice = qty * parseInt(options[size]);
 
   const handleAddtoCart = async () => {
-    await dispatch(
-      addItem({
-        id: props.items._id,
-        name: props.items.name,
-        price: finalPrice,
-        qty: qty,
-        size: size,
-      })
-    );
-    console.log(cart)
+    let food = null;
+    for (const item of cart) {
+      if (item.id === props.items._id) {
+        food = item;
+        break;
+      }
+    }
+
+    if (food) {
+      if (food.size === size) {
+        await dispatch(
+          updateItem({
+            id: food.id,
+            updates: { qty: food.qty + qty, price: food.price + finalPrice },
+          })
+        );
+      } else {
+        await dispatch(
+          addItem({
+            id: props.items._id,
+            name: props.items.name,
+            originalPrice: originalPrice,
+            price: finalPrice,
+            qty: qty,
+            size: size,
+            img: props.items.img,
+          })
+        );
+      }
+    } else {
+      await dispatch(
+        addItem({
+          id: props.items._id,
+          name: props.items.name,
+          originalPrice: originalPrice,
+          price: finalPrice,
+          qty: qty,
+          size: size,
+          img: props.items.img,
+        })
+      );
+    }
+
+    console.log(cart);
   };
 
   useEffect(() => {
-    setsize(sizeRef.current.value)
+    setsize(sizeRef.current.value);
   }, []);
 
   return (
@@ -60,9 +95,13 @@ const Cards = (props) => {
               <button onClick={() => setqty(qty + 1)}>+</button>
             </div>
             <div className="dd">
-              <select className="dropdown" ref={sizeRef} onChange={(e)=> setsize(e.target.value)}>
+              <select
+                className="dropdown"
+                ref={sizeRef}
+                onChange={(e) => setsize(e.target.value)}
+              >
                 {priceOptions.map((item) => {
-                  return ( 
+                  return (
                     <option value={item} key={item}>
                       {item}
                     </option>
@@ -76,7 +115,9 @@ const Cards = (props) => {
           </div>
           <hr className="otherline" />
           <div className="cartoption">
-            <button className="btn-cart" onClick={handleAddtoCart}>Add to Cart</button>
+            <button className="btn-cart" onClick={handleAddtoCart}>
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>
