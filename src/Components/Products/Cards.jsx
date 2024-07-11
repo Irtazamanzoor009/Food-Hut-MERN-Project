@@ -22,35 +22,21 @@ const Cards = (props) => {
   const finalPrice = qty * parseInt(options[size]);
 
   const handleAddtoCart = async () => {
-    let food = null;
-    for (const item of cart) {
-      if (item.id === props.items._id) {
-        food = item;
-        break;
-      }
-    }
+    const existingItem = cart.find(
+      (item) => item.id === props.items._id && item.size === size
+    );
 
-    if (food) {
-      if (food.size === size) {
-        await dispatch(
-          updateItem({
-            id: food.id,
-            updates: { qty: food.qty + qty, price: food.price + finalPrice },
-          })
-        );
-      } else {
-        await dispatch(
-          addItem({
-            id: props.items._id,
-            name: props.items.name,
-            originalPrice: originalPrice,
-            price: finalPrice,
-            qty: qty,
-            size: size,
-            img: props.items.img,
-          })
-        );
-      }
+    if (existingItem) {
+      await dispatch(
+        updateItem({
+          id: existingItem.id,
+          size: existingItem.size,
+          updates: {
+            qty: existingItem.qty + qty,
+            price: existingItem.price + finalPrice,
+          },
+        })
+      );
     } else {
       await dispatch(
         addItem({
@@ -65,7 +51,7 @@ const Cards = (props) => {
       );
     }
 
-    console.log(cart);
+    // console.log(cart);
   };
 
   useEffect(() => {

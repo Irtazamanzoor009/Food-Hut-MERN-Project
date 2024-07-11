@@ -6,6 +6,7 @@ import { selectCartLength } from "../../redux/CartFunctionality/cartfunctions.js
 import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const totalitems = useSelector(selectCartLength)
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
@@ -53,7 +54,8 @@ const Navbar = () => {
               <div className="cart-btn other-sate">
                 <button onClick={handleCartClick} className="hero-btn other-sate1">
                   <img src={cartimage} />
-                  <p>{useSelector(selectCartLength)}</p>
+                  {totalitems > 0 &&<p>{totalitems}</p>}
+                  
                 </button>
               </div>
               <div className="other">

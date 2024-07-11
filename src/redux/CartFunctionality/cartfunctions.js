@@ -12,8 +12,8 @@ const cartSlice = createSlice({
       state.items.push(action.payload);
     },
     updateItem: (state, action) => {
-      const { id, updates } = action.payload;
-      const item = state.items.find(item => item.id === id);
+      const { id,size, updates } = action.payload;
+      const item = state.items.find(item => item.size === size && item.id === id);
       if (item) {
         Object.assign(item, updates);
       }

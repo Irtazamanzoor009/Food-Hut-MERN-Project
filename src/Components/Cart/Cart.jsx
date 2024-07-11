@@ -1,25 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Navbar from "../Navbar/Navbar";
 import "./cart.css";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCartItems, removeItem } from "../../redux/CartFunctionality/cartfunctions.js";
+import {
+  selectCartItems,
+  removeItem,
+} from "../../redux/CartFunctionality/cartfunctions.js";
 
 const Cart = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const cart = useSelector(selectCartItems) || [];
-  const [cartItems, setcartItems] = useState([]);
   let TotalPrice = cart.reduce((total, item) => total + item.price, 0);
 
-  useEffect(() => {
-    setcartItems(cart);
-    console.log(cart)
-  }, [cart]);
-
-  const handleRemove = (item)=>{
-    dispatch(removeItem(item))
-    // setcartItems(cart)
-  }
+  const handleRemove = (item) => {
+    dispatch(removeItem(item));
+  };
 
   return (
     <>
@@ -57,7 +53,7 @@ const Cart = () => {
                 </tr>
               </thead>
               <tbody>
-                {cartItems.map((items) => {
+                {cart.map((items) => {
                   return (
                     <tr key={items.id}>
                       <td>
@@ -69,7 +65,9 @@ const Cart = () => {
                       <td>{items.size}</td>
                       <td>Rs. {items.price} /-</td>
                       <td>
-                        <button onClick={()=>handleRemove(items)}>Remove</button>
+                        <button onClick={() => handleRemove(items)}>
+                          Remove
+                        </button>
                       </td>
                     </tr>
                   );
