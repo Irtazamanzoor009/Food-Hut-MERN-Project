@@ -27,6 +27,10 @@ app.use('/food', require("./routes/displaydata"), (req,res)=>{
   console.log("Log in falied")
 })
 
+app.use('/orderdata', require("./routes/orderdata"), (req,res)=>{
+  console.log("Order data failed")
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

@@ -19,6 +19,7 @@ const Navbar = () => {
 
   const handleLogoutClick = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("UserEmail");
     navigate("/");
   };
 

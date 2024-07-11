@@ -28,6 +28,7 @@ const SignIn = () => {
     if(json.success)
     {
       localStorage.setItem("authToken",json.authToken)
+      localStorage.setItem("UserEmail",data.email)
       navigate('/')
       
     }

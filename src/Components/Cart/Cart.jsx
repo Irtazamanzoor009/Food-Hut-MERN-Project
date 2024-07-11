@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectCartItems,
   removeItem,
+  clearCart
 } from "../../redux/CartFunctionality/cartfunctions.js";
 
 const Cart = () => {
@@ -17,6 +18,28 @@ const Cart = () => {
     dispatch(removeItem(item));
   };
 
+  const handleClearCart = ()=>{
+    dispatch(clearCart())
+  }
+
+  const handleCheckOut = async()=>{
+    let userEmail = localStorage.getItem("UserEmail");
+    const response = await fetch("http://localhost:3001/orderdata/ordercart", {
+      method: "POST",
+      body: JSON.stringify({
+        email: userEmail,
+        order_data: cart,
+        order_date: new Date().toDateString()
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+    console.log("Response Status: ", response)
+    if(response.status == 200)
+    {
+        dispatch(clearCart())
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -27,6 +50,10 @@ const Cart = () => {
               <NavLink to="/">
                 <i class="fa-solid fa-arrow-left"></i> Continue Shopping
               </NavLink>
+              <div className="btnclearcart">
+              <button onClick={handleClearCart} className="clearcart ">Clear Cart</button>
+
+              </div>
             </div>
             <hr />
             <div className="check">
@@ -35,7 +62,8 @@ const Cart = () => {
                 <p>Total: Rs. {TotalPrice} /-</p>
               </div>
               <div className="checkOut">
-                <a href="">CheckOut</a>
+                
+                <button onClick={handleCheckOut}>CheckOut</button>
               </div>
             </div>
           </div>
