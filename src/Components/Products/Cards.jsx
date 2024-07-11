@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   addItem,
   selectCartItems,
@@ -11,6 +12,7 @@ const Cards = (props) => {
   const cart = useSelector(selectCartItems) || [];
   const dispatch = useDispatch();
   const sizeRef = useRef();
+  const navigate = useNavigate();
 
   const options = props.items.options[0];
   const priceOptions = Object.keys(options);
@@ -22,36 +24,42 @@ const Cards = (props) => {
   const finalPrice = qty * parseInt(options[size]);
 
   const handleAddtoCart = async () => {
-    const existingItem = cart.find(
-      (item) => item.id === props.items._id && item.size === size
-    );
+    if (localStorage.getItem("UserEmail")) {
+      const existingItem = cart.find(
+        (item) => item.id === props.items._id && item.size === size
+      );
 
-    if (existingItem) {
-      await dispatch(
-        updateItem({
-          id: existingItem.id,
-          size: existingItem.size,
-          updates: {
-            qty: existingItem.qty + qty,
-            price: existingItem.price + finalPrice,
-          },
-        })
-      );
-    } else {
-      await dispatch(
-        addItem({
-          id: props.items._id,
-          name: props.items.name,
-          originalPrice: originalPrice,
-          price: finalPrice,
-          qty: qty,
-          size: size,
-          img: props.items.img,
-        })
-      );
+      if (existingItem) {
+        await dispatch(
+          updateItem({
+            id: existingItem.id,
+            size: existingItem.size,
+            updates: {
+              qty: existingItem.qty + qty,
+              price: existingItem.price + finalPrice,
+            },
+          })
+        );
+      } else {
+        await dispatch(
+          addItem({
+            id: props.items._id,
+            name: props.items.name,
+            originalPrice: originalPrice,
+            price: finalPrice,
+            qty: qty,
+            size: size,
+            img: props.items.img,
+          })
+        );
+      }
+
+      // console.log(cart);
     }
-
-    // console.log(cart);
+    else
+    {
+      navigate('/signin')
+    }
   };
 
   useEffect(() => {
