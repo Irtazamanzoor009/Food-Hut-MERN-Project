@@ -12,7 +12,7 @@ router.post("/ordercart", async (req, res) => {
       await orderscart
         .create({
           email: req.body.email,
-          order_data: data,
+          order_data: [data],
         })
         .then(() => {
           res.json({ success: true });
@@ -39,6 +39,18 @@ router.post("/ordercart", async (req, res) => {
     }
   }
 });
+
+
+router.post("/myordercart", async (req, res) => {
+  let mydata = await orderscart.findOne({'email':req.body.email})
+  try {
+    res.json({orderdata: mydata})
+    
+  } catch (error) {
+    res.send(error);
+  }
+})
+
 
 module.exports = router;
 

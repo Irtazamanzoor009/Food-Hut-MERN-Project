@@ -43,7 +43,7 @@ const Navbar = () => {
 
               {localStorage.getItem("authToken") && (
                 <li>
-                  <NavLink to="/">My Orders</NavLink>
+                  <NavLink to="/myorders">My Orders</NavLink>
                 </li>
               )}
             </ul>
