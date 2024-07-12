@@ -35,6 +35,10 @@ app.use('/orderdata', require("./routes/orderdata"), (req,res)=>{
   console.log("Order data failed")
 })
 
+app.use('/contact', require("./routes/contact"), (req,res)=>{
+  console.log("Order data failed")
+})
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

@@ -5,6 +5,7 @@ import Cart from "./Components/Cart/Cart";
 import HomePage from "./Components/HomePage/HomePage";
 import SignIn from "./Components/Login/SignIn";
 import SignUp from "./Components/Login/SignUp";
+import Contact from "./Components/ContactUs/Contact";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/signin" element={<SignIn />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/contactus" element={<Contact/>}></Route>
           <Route path="/myorders" element={<Orders />}></Route>
         </Routes>
       </div>

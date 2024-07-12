@@ -40,6 +40,9 @@ const Navbar = () => {
               <li>
                 <NavLink to="/">Home</NavLink>
               </li>
+              <li>
+                <NavLink to="/contactus">Contact Us</NavLink>
+              </li>
 
               {localStorage.getItem("authToken") && (
                 <li>

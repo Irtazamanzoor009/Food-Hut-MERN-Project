@@ -21,6 +21,7 @@ const SignUp = () => {
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
     });
+    console.log(data);
 
     setShowSuccessMessage(true);
     setTimeout(() => {
