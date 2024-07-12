@@ -13,6 +13,7 @@ const Cards = (props) => {
   const dispatch = useDispatch();
   const sizeRef = useRef();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const options = props.items.options[0];
   const priceOptions = Object.keys(options);
@@ -24,6 +25,8 @@ const Cards = (props) => {
   const finalPrice = qty * parseInt(options[size]);
 
   const handleAddtoCart = async () => {
+    setIsLoading(true);
+
     if (localStorage.getItem("UserEmail")) {
       const existingItem = cart.find(
         (item) => item.id === props.items._id && item.size === size
@@ -53,6 +56,10 @@ const Cards = (props) => {
           })
         );
       }
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
 
       // console.log(cart);
     }
@@ -111,6 +118,7 @@ const Cards = (props) => {
           <div className="cartoption">
             <button className="btn-cart" onClick={handleAddtoCart}>
               Add to Cart
+              {isLoading && <i className="fa-solid fa-spinner fa-spin"></i>}
             </button>
           </div>
         </div>

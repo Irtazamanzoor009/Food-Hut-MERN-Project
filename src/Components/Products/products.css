@@ -118,8 +118,18 @@
   outline: none;
   border-radius: 5px;
   margin-top: 10px;
+  display: flex;
+  align-items: center;
 }
 
+.btn-cart i
+{
+  font-size: 15px;
+  margin-left: 7px;
+  /* display: none; */
+  transition: 0.3s ease;
+
+}
 .btn-cart:hover
 {
     cursor: pointer;
@@ -145,3 +155,4 @@
 {
   background-color: white;
 }
+
