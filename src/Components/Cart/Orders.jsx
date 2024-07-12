@@ -5,8 +5,10 @@ import "./orders.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCartItems } from "../../redux/CartFunctionality/cartfunctions.js";
 import PDFGenerator from "./printdocument.jsx";
+import {  useNavigate } from 'react-router-dom';
 
 const Cart = () => {
+  const navigate = useNavigate();
   const cart = useSelector(selectCartItems) || [];
   const printRef = useRef();
   const UserEmail = localStorage.getItem("UserEmail");
@@ -14,7 +16,17 @@ const Cart = () => {
   const [total, settotal] = useState(0);
 
   useEffect(() => {
-    OrderedData();
+    const userEmail = localStorage.getItem('UserEmail');
+    console.log(userEmail)
+    if (!userEmail) {
+     navigate('/signin')
+    }
+    else if(userEmail)
+    {
+      OrderedData();
+
+    }
+   
   }, []);
 
   const OrderedData = async () => {

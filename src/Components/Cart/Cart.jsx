@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Navbar from "../Navbar/Navbar";
 import "./cart.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCartItems,
@@ -10,6 +10,7 @@ import {
 } from "../../redux/CartFunctionality/cartfunctions.js";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector(selectCartItems) || [];
   let TotalPrice = cart.reduce((total, item) => total + item.price, 0);
@@ -21,6 +22,14 @@ const Cart = () => {
   const handleClearCart = ()=>{
     dispatch(clearCart())
   }
+
+  useEffect(() => {
+    const userEmail = localStorage.getItem('UserEmail');
+    console.log(userEmail)
+    if (!userEmail) {
+     navigate('/signin')
+    }   
+  }, []);
 
   const handleCheckOut = async()=>{
     let userEmail = localStorage.getItem("UserEmail");
