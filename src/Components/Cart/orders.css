@@ -16,9 +16,10 @@ html{
     display: flex;
     width: 90%;
     flex-direction: column;
-    margin: 10px auto;
-    padding-top: 10px;
+    margin: 0px auto;
+    /* padding-top: 0px; */
     flex-grow: 1;
+    /* background-color: yellow; */
     
 }
 
@@ -235,7 +236,13 @@ td button
     align-items: center;
     text-align: center;
 }
-
+.total-area {
+    text-align: right;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 15px;
+  }
 td button:hover
 {
     background-color: #ff6148;
@@ -290,6 +297,54 @@ td button
     text-align: center;
 }
 
+.btn-clear
+{
+    /* background-color: yellow; */
+    width: 90%;
+    display: flex;
+    justify-content: right;
+    margin: 0px auto;
+    margin-top: 20px;
+    flex-direction: row-reverse;
+
+}
+
+.green-print
+{
+    padding: 10px 20px;
+    background-color: #00bc8c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-items: center;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.green-print:hover
+{
+    background-color: #00e2a8;
+}
+
+.btn-clear .red-delete
+{
+    padding: 10px 20px;
+    background-color: rgb(245, 70, 70);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-items: center;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.red-delete:hover
+{
+    background-color: #ff5548;
+}
+
 td button:hover
 {
     background-color: #ff6148;
@@ -310,3 +365,34 @@ td img {
     height: 70px;
     width: 100px;
 }
+
+/* orders.css */
+
+/* orders.css */
+
+@media print {
+    .navbar, 
+    .btn-clear {
+      display: none;
+    }
+  
+    .print-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  
+    .print-logo {
+      width: 150px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+  
+    .orders-cart-container {
+      width: 100%;
+    }
+  
+    .orders-cart-items {
+      page-break-inside: avoid;
+    }
+  }
+  

@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { pdf } from "@react-pdf/renderer";
 import Navbar from "../Navbar/Navbar";
 import "./orders.css";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCartItems } from "../../redux/CartFunctionality/cartfunctions.js";
+import PDFGenerator from "./printdocument.jsx";
 
 const Cart = () => {
   const cart = useSelector(selectCartItems) || [];
-
+  const printRef = useRef();
   const UserEmail = localStorage.getItem("UserEmail");
   const [data, setdata] = useState([]);
+  const [total, settotal] = useState(0);
 
   useEffect(() => {
     OrderedData();
@@ -32,13 +35,57 @@ const Cart = () => {
     }
   };
 
+  const handleClearAllRecords = async () => {
+    const response = await fetch(
+      `http://localhost:3001/orderdata/clearallrecords`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ email: UserEmail }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    console.log(response);
+    if (response.ok) {
+      setdata([]);
+    } else {
+      console.error("Failed to clear all records");
+    }
+  };
+
+  const handlePrint = async () => {
+    const pdfDoc = pdf();
+    pdfDoc.updateContainer(<PDFGenerator data={data} userName={UserEmail} />);
+    const blob = await pdfDoc.toBlob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "myorders.pdf");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const calculateTotal = (order) => {
+    return order.slice(1).reduce((total, item) => total + item.price, 0);
+  };
+
   return (
     <>
       <Navbar />
       <div className="orders-complete">
+        <div className="btn-clear">
+          <button className="red-delete" onClick={handleClearAllRecords}>
+            Clear Record
+          </button>
+          <button className="green-print" onClick={handlePrint}>
+            Print
+          </button>
+        </div>
+
         <div className="orders-cart-container">
           {data.length > 0
             ? data.map((order, index) => {
+                const total = calculateTotal(order);
                 return (
                   <>
                     <div key={index} className="orders-cart-items">
@@ -57,23 +104,28 @@ const Cart = () => {
                           </thead>
                           <tbody>
                             {order.slice(1).map((item) => (
-                              <tr key={item.id}>
-                                <td>
-                                  <img
-                                    className="cart-image-shown"
-                                    src={item.img}
-                                    alt={item.name}
-                                  />
-                                </td>
-                                <td>{item.name}</td>
-                                <td>{item.price}</td>
-                                <td>{item.qty}</td>
-                                <td>{item.size}</td>
-                                <td>{item.price * item.qty}</td>
-                              </tr>
+                              <>
+                                <tr key={item.id}>
+                                  <td>
+                                    <img
+                                      className="cart-image-shown"
+                                      src={item.img}
+                                      alt={item.name}
+                                    />
+                                  </td>
+                                  <td>{item.name}</td>
+                                  <td>{item.originalPrice}</td>
+                                  <td>{item.qty}</td>
+                                  <td>{item.size}</td>
+                                  <td>{item.price}</td>
+                                </tr>
+                              </>
                             ))}
                           </tbody>
                         </table>
+                        <div className="total-area">
+                          <p>Total: Rs. {total} /-</p>
+                        </div>
                       </div>
                     </div>
                   </>
