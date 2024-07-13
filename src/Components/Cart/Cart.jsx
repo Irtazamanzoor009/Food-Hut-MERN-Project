@@ -37,7 +37,7 @@ const Cart = () => {
       body: JSON.stringify({
         email: userEmail,
         order_data: cart,
-        order_date: new Date().toDateString(),
+        order_date: new Date().toLocaleString(),
       }),
       headers: { "Content-Type": "application/json" },
     });
