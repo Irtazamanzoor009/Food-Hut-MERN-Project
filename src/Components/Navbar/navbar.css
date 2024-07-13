@@ -164,6 +164,12 @@ nav {
 
 .spc-logout {
   font-weight: bold;
+  cursor: pointer;
+}
+
+.spc-logout:hover
+{
+  color: #00e2a8;
 }
 
 @media (max-width: 700px) {
@@ -180,6 +186,11 @@ nav {
     z-index: 10;
     flex-direction: column;
     padding-top: 0px;
+  }
+
+  .main-container a:hover
+  {
+    color: #00e2a8;
   }
   
   .main-container.open {

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { useState } from "react";
 import "./slider.css";
 import image1 from "./1.jpg";
@@ -28,13 +28,13 @@ const Slider = () => {
     const value = e.target.value;
     dispatch(SetSearchValue(value))
   }
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  //   }, 2000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 2000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="main">
