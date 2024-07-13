@@ -60,12 +60,8 @@ const Cards = (props) => {
       setTimeout(() => {
         setIsLoading(false);
       }, 300);
-
-      // console.log(cart);
-    }
-    else
-    {
-      navigate('/signin')
+    } else {
+      navigate("/signin");
     }
   };
 
@@ -87,12 +83,12 @@ const Cards = (props) => {
         <div className="information">
           <div className="contents1">
             <div className="quantity">
-              <button onClick={() => setqty(qty - 1)}>-</button>
+              <button disabled={qty<=1} onClick={() => setqty(qty - 1)}>-</button>
               <input
                 type="text"
                 value={qty}
                 onChange={(e) => setqty(Number(e.target.value))}
-              />
+                />
               <button onClick={() => setqty(qty + 1)}>+</button>
             </div>
             <div className="dd">

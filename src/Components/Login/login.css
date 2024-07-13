@@ -130,3 +130,34 @@
 .green{
     background-color:#86f189;
 }
+
+@media(max-width:410px)
+{
+    .signup
+    {
+        width: 300px;
+    }
+}
+
+@media(max-width:330px)
+{
+    .signup
+    {
+        width: 250px;
+    }
+    .signupForm input::placeholder
+    {
+        font-size: 14px;
+    }
+
+    .signupForm .form button
+    {
+        font-size: 15px;
+    }
+
+    .signup p
+    {
+        font-size: 12px;
+        font-weight: 600;
+    }
+}

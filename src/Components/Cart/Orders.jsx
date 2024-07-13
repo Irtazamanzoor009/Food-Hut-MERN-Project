@@ -90,7 +90,7 @@ const Cart = () => {
             Clear Record
           </button>
           <button className="green-print" onClick={handlePrint}>
-            Print
+            Download
           </button>
         </div>
 
@@ -102,7 +102,7 @@ const Cart = () => {
                   <>
                     <div key={index} className="orders-cart-items">
                       <div className="date">
-                        <p>Date: {order[0].order_date}</p>
+                        <p className="date-d">Date: {order[0].order_date}</p>
                         <table>
                           <thead>
                             <tr>
@@ -117,7 +117,7 @@ const Cart = () => {
                           <tbody>
                             {order.slice(1).map((item) => (
                               <>
-                                <tr key={item.id}>
+                                <tr key={item.id} className="last-row">
                                   <td>
                                     <img
                                       className="cart-image-shown"

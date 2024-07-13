@@ -42,6 +42,13 @@
   font-size: 100px;
 }
 
+@media (max-width:300px) {
+  .prev-button,
+.next-button{
+  font-size: 70px;
+}
+}
+
 .prev-button:hover, .next-button:hover
 {
     background-color: rgba(0, 0, 0, 0.5);

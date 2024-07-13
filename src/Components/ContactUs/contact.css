@@ -68,3 +68,18 @@
   background-color: #00e2a8;
   /* transition: 0.3s e ase; */
 }
+
+@media(max-width:600px)
+{
+  .input-box{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* background-color: red; */
+  }
+
+  .contact form .input-box input
+  {
+    width: 100%;
+  }
+}

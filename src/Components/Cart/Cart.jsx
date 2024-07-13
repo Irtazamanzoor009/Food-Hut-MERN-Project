@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import "./cart.css";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectCartItems,
   removeItem,
-  clearCart
+  clearCart,
 } from "../../redux/CartFunctionality/cartfunctions.js";
 
 const Cart = () => {
@@ -14,40 +14,38 @@ const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector(selectCartItems) || [];
   let TotalPrice = cart.reduce((total, item) => total + item.price, 0);
-
   const handleRemove = (item) => {
     dispatch(removeItem(item));
   };
 
-  const handleClearCart = ()=>{
-    dispatch(clearCart())
-  }
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
 
   useEffect(() => {
-    const userEmail = localStorage.getItem('UserEmail');
-    console.log(userEmail)
+    const userEmail = localStorage.getItem("UserEmail");
+    // console.log(userEmail)
     if (!userEmail) {
-     navigate('/signin')
-    }   
+      navigate("/signin");
+    } 
   }, []);
 
-  const handleCheckOut = async()=>{
+  const handleCheckOut = async () => {
     let userEmail = localStorage.getItem("UserEmail");
     const response = await fetch("http://localhost:3001/orderdata/ordercart", {
       method: "POST",
       body: JSON.stringify({
         email: userEmail,
         order_data: cart,
-        order_date: new Date().toDateString()
+        order_date: new Date().toDateString(),
       }),
       headers: { "Content-Type": "application/json" },
     });
-    console.log("Response Status: ", response)
-    if(response.status == 200)
-    {
-        dispatch(clearCart())
+    console.log("Response Status: ", response);
+    if (response.status == 200) {
+      dispatch(clearCart());
     }
-  }
+  };
 
   return (
     <>
@@ -57,22 +55,29 @@ const Cart = () => {
           <div className="price">
             <div className="continue-shopping">
               <NavLink to="/">
-                <i class="fa-solid fa-arrow-left"></i> Continue Shopping
+                <i class="fa-solid fa-arrow-left"></i>{" "}
+                <p className="cont-shop">Continue Shopping</p>
               </NavLink>
               <div className="btnclearcart">
-              <button onClick={handleClearCart} className="clearcart ">Clear Cart</button>
-
+                <button onClick={handleClearCart} className="clearcart ">
+                  {" "}
+                  <i class="cart-clear-i fa-regular fa-cart-circle-xmark"></i>{" "}
+                  <p className="cart-clear-p">Clear Cart</p>
+                </button>
               </div>
             </div>
             <hr />
             <div className="check">
               <div className="item-price">
                 <p>Items: {cart.length}</p>
-                <p>Total: Rs. {TotalPrice} /-</p>
+                <p>Total: Rs. {TotalPrice}</p>
               </div>
               <div className="checkOut">
-                
-                <button onClick={handleCheckOut}>CheckOut</button>
+                <button onClick={handleCheckOut}>
+                  {" "}
+                  <i class="cart-clear-i fa-regular fa-truck"></i>{" "}
+                  <p className="cart-clear-p">CheckOut</p>{" "}
+                </button>
               </div>
             </div>
           </div>
@@ -92,7 +97,7 @@ const Cart = () => {
               <tbody>
                 {cart.map((items) => {
                   return (
-                    <tr key={items.id}>
+                    <tr key={items.id} className="last-row">
                       <td>
                         <img className="cart-image-shown" src={items.img} />
                       </td>
@@ -100,10 +105,14 @@ const Cart = () => {
                       <td>{items.originalPrice}</td>
                       <td>{items.qty}</td>
                       <td>{items.size}</td>
-                      <td>Rs. {items.price} /-</td>
+                      <td>Rs. {items.price}</td>
                       <td>
-                        <button onClick={() => handleRemove(items)}>
-                          Remove
+                        <button
+                          className="btn-remove"
+                          onClick={() => handleRemove(items)}
+                        >
+                          <i class="del-btn fa-sharp fa-solid fa-trash"></i>
+                          <p className="del-rem">Remove</p>
                         </button>
                       </td>
                     </tr>
