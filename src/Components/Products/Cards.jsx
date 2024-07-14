@@ -97,7 +97,7 @@ const Cards = (props) => {
                 ref={sizeRef}
                 onChange={(e) => setsize(e.target.value)}
               >
-                {priceOptions.map((item) => {
+                {priceOptions.slice(1).map((item) => {
                   return (
                     <option value={item} key={item}>
                       {item}
