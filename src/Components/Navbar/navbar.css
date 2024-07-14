@@ -80,22 +80,24 @@ nav {
 }
 
 .cart-btn {
-  background: transparent;
+  /* background: transparent; */
   padding: 0;
   margin-right: 10px;
   position: relative;
+  cursor: pointer;
+  background-color: whitesmoke;
+  outline: none;
+  border: none;
+  
 }
-
+/* 
 .cart-btn img {
   width: 40px;
   height: 40px;
   cursor: pointer;
-}
+} */
 
-.cart-btn img:hover {
-  /* background-color: aliceblue; */
-  border-radius: 10px;
-}
+
 
 .cart-btn p {
   background: red;
@@ -104,9 +106,30 @@ nav {
   color: white;
   padding: 2px 6px;
   position: absolute;
-  top: 0;
+  top: -4px;
   right: -5px;
   font-size: 12px;
+}
+
+.btn-other .cart-btn
+{
+  border-radius: 6px;
+}
+
+.cart-btn i
+{
+  font-size: 27px;
+  padding: 5px 7px;
+  background-color: whitesmoke;
+  border-radius: 5px;
+  
+}
+
+.cart-btn i:hover
+{
+  color: white;
+  background-color: #006f53;
+  transition: 0.3s ease;
 }
 
 .menu-btn {
@@ -126,10 +149,19 @@ nav {
   margin-left: 10px;
 }
 
-.cart-btn-mobile img {
-  width: 40px;
-  height: 40px;
+.cart-btn-mobile i {
+  font-size: 27px;
+  padding: 5px 7px;
+  background-color: whitesmoke;
+  border-radius: 5px;
   cursor: pointer;
+}
+
+.cart-btn-mobile i:hover
+{
+  color: white;
+  background-color: #006f53;
+  transition: 0.3s ease;
 }
 
 .cart-btn-mobile p {
@@ -139,8 +171,8 @@ nav {
   color: white;
   padding: 2px 6px;
   position: absolute;
-  top: 0;
-  right: -5px;
+  top: -4px;
+  right: -4px;
   font-size: 12px;
 }
 
@@ -226,11 +258,6 @@ nav {
 }
 
 @media (max-width: 300px) {
-  
-  .cart-btn-mobile img {
-    height: 33px;
-    width: 33px;
-  }
   
   .res-buttons button {
     margin-left: 10px;

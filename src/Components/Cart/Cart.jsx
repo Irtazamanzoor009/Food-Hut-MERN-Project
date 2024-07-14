@@ -31,11 +31,14 @@ const Cart = () => {
   }, []);
 
   const handleCheckOut = async () => {
-    let userEmail = localStorage.getItem("UserEmail");
-    const response = await fetch("http://localhost:3001/orderdata/ordercart", {
-      method: "POST",
-      body: JSON.stringify({
-        email: userEmail,
+    if(cart.length > 0)
+    {
+
+      let userEmail = localStorage.getItem("UserEmail");
+      const response = await fetch("http://localhost:3001/orderdata/ordercart", {
+        method: "POST",
+        body: JSON.stringify({
+          email: userEmail,
         order_data: cart,
         order_date: new Date().toLocaleString(),
       }),
@@ -45,6 +48,7 @@ const Cart = () => {
     if (response.status == 200) {
       dispatch(clearCart());
     }
+  }
   };
 
   return (

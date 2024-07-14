@@ -70,9 +70,10 @@ const Navbar = () => {
           </div>
           <div className="auth-buttons">
             {localStorage.getItem("authToken") ? (
-              <div className="btns btn-other">
-                <button onClick={handleCartClick} className="hero-btn cart-btn">
-                  <img src={cartimage} alt="Cart" />
+              <div className="btns btn-other check-cart">
+                <button onClick={handleCartClick} className="cart-btn">
+                  {/* <img src={cartimage} alt="Cart" /> */}
+                  <i class="fa-regular fa-cart-shopping"></i>
                   {totalitems > 0 && <p>{totalitems}</p>}
                 </button>
                 <button className="hero-btn logout" onClick={handleLogoutClick}>
@@ -97,7 +98,8 @@ const Navbar = () => {
             <i className={`fa ${isOpen ? "fa-times" : "fa-bars"}`}></i>
           </button>
           {localStorage.getItem("authToken") && <button className="cart-btn-mobile" onClick={handleCartClick}>
-            <img src={cartimage} alt="Cart" />
+            {/* <img src={cartimage} alt="Cart" /> */}
+            <i class="fa-regular fa-cart-shopping"></i>
             {totalitems > 0 && <p>{totalitems}</p>}
           </button>}
           
