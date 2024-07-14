@@ -44,6 +44,21 @@
   width: 49%;
 }
 
+form button
+{
+  width: 100%;
+  padding: 10px;
+  font-weight: 700;
+  color: white;
+  display: flex;
+  justify-content: center;
+}
+
+form button i
+{
+  margin-left: 10px;
+}
+
 .contact form textarea {
   resize: none;
 }
@@ -79,6 +94,11 @@
   }
 
   .contact form .input-box input
+  {
+    width: 100%;
+  }
+
+  .wraper
   {
     width: 100%;
   }

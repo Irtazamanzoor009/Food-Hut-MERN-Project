@@ -164,9 +164,19 @@
   } */
 }
 
+@media(max-width:500px)
+{
+  .cards {
+    width: 300px;
+    font-size: 15px;
+    height: 90%;
+    background-color: red;
+  }
+}
+
 @media (max-width: 640px) {
   .cards {
-    width: 250px;
+    width: 300px;
     font-size: 15px;
     height: 90%;
   }
@@ -216,7 +226,7 @@
   }
 
   .cards .image {
-    height: 150px;
+    height: 250px;
   }
 
   .name {
@@ -246,12 +256,17 @@
 @media (max-width: 515px) {
   .row {
     grid-template-columns: repeat(1, 1fr);
-    grid-row-gap: 20px;
-    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+    grid-column-gap: 5px;
+    
+  }
+  .cards .image {
+    height: 250px;
   }
   .cards {
-    width: 250px;
+    width: 350px;
     height: 90%;
+    background-color: red;
   }
   .contents1
   {

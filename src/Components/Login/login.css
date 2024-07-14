@@ -73,6 +73,16 @@
     color: white;
     font-size: 16px;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    
+}
+
+.form i
+{
+    margin-left: 10px;
+    margin-top: 2px;
 }
 
 .signupForm .form button:hover {

@@ -20,6 +20,7 @@ const Cart = () => {
 
   const handleClearCart = () => {
     dispatch(clearCart());
+    alert("Your Cart has been Cleared")
   };
 
   useEffect(() => {
@@ -68,7 +69,7 @@ const Cart = () => {
                 <p className="cont-shop">Continue Shopping</p>
               </NavLink>
               <div className="btnclearcart">
-                <button onClick={handleClearCart} className="clearcart ">
+                <button disabled={cart.length === 0} onClick={handleClearCart} className="clearcart ">
                   {" "}
                   <i class="cart-clear-i fa-regular fa-cart-circle-xmark"></i>{" "}
                   <p className="cart-clear-p">Clear Cart</p>

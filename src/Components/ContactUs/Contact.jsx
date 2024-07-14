@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 const Contact = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     register,
@@ -16,12 +17,17 @@ const Contact = () => {
   } = useForm();
 
   const onsubmit = async (data) => {
+    setIsLoading(true);
     await fetch("http://localhost:3001/contact/contactus", {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
     });
-    console.log(data)
+    console.log(data);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
 
     setShowSuccessMessage(true);
     setTimeout(() => {
@@ -40,19 +46,27 @@ const Contact = () => {
               Contact <span>Me</span>
             </h2>
             {showSuccessMessage && (
-              <div className="green msgs contact-form">Message Sent Successfully.</div>
+              <div className="green msgs contact-form">
+                Message Sent Successfully.
+              </div>
             )}
             {errors.name && (
               <div className="red msgs contact-form">{errors.name.message}</div>
             )}
             {errors.email && (
-              <div className="red msgs contact-form">{errors.email.message}</div>
+              <div className="red msgs contact-form">
+                {errors.email.message}
+              </div>
             )}
             {errors.number && (
-              <div className="red msgs contact-form">{errors.number.message}</div>
+              <div className="red msgs contact-form">
+                {errors.number.message}
+              </div>
             )}
             {errors.message && (
-              <div className="red msgs contact-form">{errors.message.message}</div>
+              <div className="red msgs contact-form">
+                {errors.message.message}
+              </div>
             )}
 
             <form action="" onSubmit={handleSubmit(onsubmit)}>
@@ -60,12 +74,16 @@ const Contact = () => {
                 <input
                   type="text"
                   placeholder="Full Name"
-                  {...register("name", { required:{value:true,message:"Please Enter Name"} })}
+                  {...register("name", {
+                    required: { value: true, message: "Please Enter Name" },
+                  })}
                 />
                 <input
                   type="email"
                   placeholder="Email Address"
-                  {...register("email", { required: {value:true,message:"Please Enter Email"} })}
+                  {...register("email", {
+                    required: { value: true, message: "Please Enter Email" },
+                  })}
                 />
               </div>
 
@@ -74,7 +92,10 @@ const Contact = () => {
                   type="text"
                   placeholder="Mobile Number"
                   {...register("number", {
-                    required: {value:true, message:"Please Enter Phone Number"},
+                    required: {
+                      value: true,
+                      message: "Please Enter Phone Number",
+                    },
                     minLength: {
                       value: 11,
                       message: "Phone Number is Incorrect",
@@ -95,9 +116,14 @@ const Contact = () => {
               <textarea
                 rows="8"
                 placeholder="Your Message"
-                {...register("message", { required: {value: true, message:"Please Enter Message"} })}
+                {...register("message", {
+                  required: { value: true, message: "Please Enter Message" },
+                })}
               ></textarea>
-              <input type="submit" value="Send Message" class="btn" />
+              <button type="submit" class="btn">
+                 Send Message
+                 {isLoading && <i className="fa-solid fa-spinner fa-spin"></i>}
+              </button>
             </form>
           </div>
         </div>
