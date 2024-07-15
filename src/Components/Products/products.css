@@ -1,5 +1,5 @@
 .main-products {
-  padding: 2vw 8vw 5vw 8vw;
+  padding: 1vw 8vw 5vw 8vw;
   text-align: left;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: black;
@@ -148,6 +148,39 @@
 .dropdown option {
   background-color: white;
 }
+
+.upper
+{
+  color: white;
+  width: 85%;
+  margin: 10px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.categorised
+{
+  display: flex;
+  justify-content: left;
+  margin-top: 13px;
+}
+
+.categorised select
+{
+  background-color: #00b689;
+  color: black; 
+  outline: none;
+  border: none;
+  padding: 10px 8px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.categorised select option
+{
+  background-color: white;
+  cursor: pointer;
+}
+
 
 @media (max-width: 700px) {
   .row {

@@ -19,10 +19,14 @@ const Cards = (props) => {
   const priceOptions = Object.keys(options);
 
   const [qty, setqty] = useState(1);
-  const [size, setsize] = useState(1);
+  const [size, setsize] = useState(priceOptions[1]);
 
-  const originalPrice = parseInt(options[size]);
-  const finalPrice = qty * parseInt(options[size]);
+  useEffect(() => {
+    setsize(priceOptions[1]);
+  }, [props.items.options]);
+
+  const originalPrice = parseFloat(options[size]) || 0;
+  const finalPrice = qty * originalPrice;
 
   const handleAddtoCart = async () => {
     setIsLoading(true);
@@ -65,9 +69,16 @@ const Cards = (props) => {
     }
   };
 
+  // useEffect(() => {
+  //   setsize(sizeRef.current.value);
+  // }, []);
+
   useEffect(() => {
-    setsize(sizeRef.current.value);
-  }, []);
+    // Debug logs
+    console.log('Options:', options);
+    console.log('Size:', size);
+    console.log('Price for selected size:', options[size]);
+  }, [size, options]);
 
   return (
     <div className="cards">
@@ -97,7 +108,7 @@ const Cards = (props) => {
                 ref={sizeRef}
                 onChange={(e) => setsize(e.target.value)}
               >
-                {priceOptions.slice(1).map((item) => {
+                {priceOptions.map((item) => {
                   return (
                     <option value={item} key={item}>
                       {item}
@@ -107,7 +118,7 @@ const Cards = (props) => {
               </select>
             </div>
             <div className="price">
-              <h3>Rs.{finalPrice}/-</h3>
+            <h3>Rs. {finalPrice}/-</h3>
             </div>
           </div>
           <hr className="otherline" />
