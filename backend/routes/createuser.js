@@ -10,6 +10,11 @@ router.post("/createuser", async (req, res) => {
   const securePassword = await bcrypt.hash(req.body.password, salt);
 
   try {
+    let existingUser = await user.findOne({ email: req.body.email });
+    console.log("Existing User is: ",existingUser)
+    if (existingUser) {
+      return res.status(400).json({ success: false, error: "Email already exists" });
+    }
     console.log("creating");
     await user.create({
       username: req.body.username,
@@ -20,7 +25,7 @@ router.post("/createuser", async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.log("error in using schema", error);
-    res.json({ success: false });
+    res.json({ success: false, error:error });
   }
 });
 
