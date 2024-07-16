@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../Navbar/Navbar.jsx";
 import "./mainpage.css";
 import Modal from "./Modal";
@@ -12,6 +12,10 @@ const Mainpage = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [options, setOptions] = useState([]);
+  const [foodCategory, setfoodCategory] = useState([]);
+  const [foodItem, setfoodItem] = useState([]);
+  const [selectedCategoryDropDown, setSelectedCategoryDropDown] =
+    useState("All");
 
   const addOptionField = () => {
     setOptions([...options, ""]);
@@ -57,15 +61,51 @@ const Mainpage = () => {
     setOptions([]);
   };
 
+  const LoadData = async (data) => {
+    const response = await fetch("http://localhost:3001/food/fooditems", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: { "Content-Type": "application/json" },
+    });
+    const json = await response.json();
+    setfoodItem(json[0]);
+    setfoodCategory(json[1]);
+  };
+
+  useEffect(() => {
+    LoadData();
+  }, []);
+
+  const handleSetCategory = (e) => {
+    setSelectedCategoryDropDown(e.target.value);
+    console.log("Category is: ", e.target.value);
+  };
+
+  const getCountByCategory = (categoryName) => {
+    return foodItem.filter((item) => item.CategoryName === categoryName).length;
+  };
+
   return (
     <div>
       <Navbar />
       <div className="mainpage-container">
         <div className="mainpage-wraper">
           <div className="upper-btns">
-            <select>
-              <option value="">Pizza</option>
-              <option value="">Biryani</option>
+            <select onChange={(e) => handleSetCategory(e)}>
+              <option value="All">All</option>
+              {foodCategory.length > 0 &&
+                foodCategory.map((category) => {
+                  return (
+                    <>
+                      <option
+                        value={category.CategoryName}
+                        key={category.CategoryName}
+                      >
+                        {category.CategoryName}
+                      </option>
+                    </>
+                  );
+                })}
             </select>
             <button
               className="mainpage-btn"
@@ -75,46 +115,66 @@ const Mainpage = () => {
             </button>
           </div>
           <div className="category-box">
-            <div className="mainpage-boxes">
-              <div className="boxes-contents">
-                <p>Category Name: Pizza</p>
-                <p>Total Items: 2</p>
-              </div>
-              <div className="boxes-buttons">
-                <button
-                  className="mainpage-btn top-btn"
-                  onClick={() => openAddItemModal("Pizza")}
-                >
-                  <i className="fa-solid fa-plus"></i> <p>Add New Item</p>
-                </button>
-                <button
-                  className="mainpage-btn"
-                  onClick={() => openViewItemsModal("Pizza")}
-                >
-                  <i className="fa-sharp fa-solid fa-eye"></i> <p>View Items</p>
-                </button>
-              </div>
-            </div>
-            <div className="mainpage-boxes">
-              <div className="boxes-contents">
-                <p>Category Name: SandWiches</p>
-                <p>Total Items: 2</p>
-              </div>
-              <div className="boxes-buttons">
-                <button
-                  className="mainpage-btn top-btn"
-                  onClick={() => openAddItemModal("SandWiches")}
-                >
-                  <i className="fa-solid fa-plus"></i> <p>Add New Item</p>
-                </button>
-                <button
-                  className="mainpage-btn"
-                  onClick={() => openViewItemsModal("SandWiches")}
-                >
-                  <i className="fa-sharp fa-solid fa-eye"></i> <p>View Items</p>
-                </button>
-              </div>
-            </div>
+            {foodCategory.length > 0 &&
+              (selectedCategoryDropDown === "All"
+                ? foodCategory.map((item) => {
+                    return (
+                      <div key={item._id} className="mainpage-boxes">
+                        <div className="boxes-contents">
+                          <p>Category Name: {item.CategoryName}</p>
+
+                          <p>Total Items: {getCountByCategory(item.CategoryName)}</p>
+                        </div>
+                        <div className="boxes-buttons">
+                          <button
+                            className="mainpage-btn top-btn"
+                            onClick={() => openAddItemModal(item.CategoryName)}
+                          >
+                            <i className="fa-solid fa-plus"></i>{" "}
+                            <p>Add New Item</p>
+                          </button>
+                          <button
+                            className="mainpage-btn"
+                            onClick={() => openViewItemsModal(item.CategoryName)}
+                          >
+                            <i className="fa-sharp fa-solid fa-eye"></i>{" "}
+                            <p>View Items</p>
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                : foodCategory
+                    .filter(
+                      (filteritem) =>
+                        filteritem.CategoryName === selectedCategoryDropDown
+                    )
+                    .map((selectedcat) => {
+                      return (
+                        <div key={selectedcat._id} className="mainpage-boxes">
+                          <div className="boxes-contents">
+                            <p>Category Name: {selectedcat.CategoryName}</p>
+                            <p>Total Items: {getCountByCategory(selectedcat.CategoryName)}</p>
+                          </div>
+                          <div className="boxes-buttons">
+                            <button
+                              className="mainpage-btn top-btn"
+                              onClick={() => openAddItemModal(selectedcat.CategoryName)}
+                            >
+                              <i className="fa-solid fa-plus"></i>{" "}
+                              <p>Add New Item</p>
+                            </button>
+                            <button
+                              className="mainpage-btn"
+                              onClick={() => openViewItemsModal(selectedcat.CategoryName)}
+                            >
+                              <i className="fa-sharp fa-solid fa-eye"></i>{" "}
+                              <p>View Items</p>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    }))}
           </div>
         </div>
       </div>

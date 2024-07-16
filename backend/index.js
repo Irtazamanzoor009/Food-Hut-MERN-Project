@@ -51,6 +51,8 @@ app.use('/login',require('./routes/createadmin'))
 
 app.use('/getuser',require('./routes/createuser'))
 
+app.use('/getcontacts',require('./routes/contact'))
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

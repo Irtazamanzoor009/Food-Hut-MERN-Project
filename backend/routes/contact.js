@@ -19,6 +19,17 @@ router.post("/contactus", async (req, res) => {
   }
 });
 
+router.get("/getcontacts",async(req,res)=>{
+  try {
+    const contacts = await contact.find();
+
+    res.send(contacts);
+  } catch (error) {
+    res.json(error);
+    console.log("Internal Server Error", error);
+  }
+})
+
 
 
 module.exports = router;
