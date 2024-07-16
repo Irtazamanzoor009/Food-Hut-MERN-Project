@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const url = `mongodb+srv://irtaza009:irtaza009@cluster0.zops4jh.mongodb.net/foodhutmernproject?retryWrites=true&w=majority&appName=Cluster0`;
+const url = `mongodb+srv://irtaza009:irtaza009@cluster0.zops4jh.mongodb.net/foodhutlocal?retryWrites=true&w=majority&appName=Cluster0`;
 
 const connection_db = async () => {
   try {

@@ -1,0 +1,138 @@
+.users-container
+{
+    background-color: black;
+    color: white;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+}
+
+.cart-items
+{
+    /* background-color: red; */
+    width: 80%;
+    margin: 10px auto;
+    margin-top: 30px;
+    border: 1.5px solid #dddddd;
+    border-radius: 10px;
+}
+
+.table-contents
+{
+    overflow: hidden;
+    /* border-radius: 10px; */
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    
+    /* background-color: yellowgreen; */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-contents table {
+    /* background: red; */
+    background-color: #00bc8c;
+    border-top-left-radius: 10px; 
+    border-top-right-radius: 10px;
+}
+
+.table-contents th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.body-content
+{
+    height: 82vh;
+    overflow-y: auto;
+}
+
+.body-content tbody th, td {
+    padding: 15px;
+    text-align: center;
+    /* background-color: red; */
+    /* border-bottom: 1px solid #ddd; */
+}
+
+.btn-remove
+{
+    background-color: rgb(245, 70, 70);
+    
+}
+
+.btn-remove:hover
+{
+    background-color: #ff6148;
+
+}
+
+.btn-enable
+{
+    background-color: #00bc8c;
+}
+
+.btn-enable:hover
+{
+    background-color: #008966;
+}
+
+.btns
+{
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    margin-right: 0px;
+    margin-left: 20px;
+}
+
+
+
+
+
+th {
+    font-weight: bold;
+}
+
+
+.username
+{
+    /* background-color: red; */
+    width: 23%;
+}
+
+.useremail
+{
+    /* background-color: green; */
+    width: 32%;
+}
+
+.location
+{
+    /* background-color: orange; */
+    width: 15%;
+}
+
+.date
+{
+    /* background-color: peru; */
+    width: 15%;
+}
+
+.status
+{
+    /* background-color:#ff6148; */
+    width: 15%;
+}
+

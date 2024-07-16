@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import Navbar from "../Navbar/Navbar";
+import React, {useState} from "react";
 import "../Login/login.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const [serverError, setserverError] = useState("");
+  const [Message, setMessage] = useState(false);
 
   const {
     register,
@@ -18,41 +17,39 @@ const SignIn = () => {
   } = useForm();
 
   const onsubmit = async (data) => {
-    const response = await fetch("http://localhost:3001/signin/login", {
+    const response = await fetch("http://localhost:3001/login/adminlogin", {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
     });
-    const json = await response.json();
+    const json = await response.json()
     console.log(json);
-    if (json.success && json.error === "None") {
-      localStorage.setItem("authToken", json.authToken);
-      localStorage.setItem("UserEmail", data.email);
-      navigate("/");
-    } else if (json.success === false) {
-      setserverError(json.error);
-      if (json.error === "You have been blocked by the Admin. Contact the Admin") {
-        setTimeout(() => {
-          setserverError("");
-        }, 3000);
-      }
-      else
-      {
-        setTimeout(() => {
-          setserverError("");
-        }, 1000);
-      }
+    if(json.success)
+    {
+      localStorage.setItem("authTokenAdmin",json.authToken)
+      localStorage.setItem("AdminEmail",data.email)
+      navigate('/mainpage')
+      
     }
+    else
+    {
+      setMessage(true);
+      setTimeout(() => {
+        setMessage(false);
+      }, 1000);
+    }
+    
   };
 
   return (
     <>
-      <Navbar />
       <div className="signup-container-signin signup-container">
         <div className="signup">
           <div className="signupForm">
-            <h3>Sign In</h3>
-            {serverError && <div className="red msgs">{serverError}</div>}
+            <h3>Admin Sign In</h3>
+            {Message && (
+              <div className="red msgs">Invalid Credentials</div>
+            )}
             <form className="form" action="" onSubmit={handleSubmit(onsubmit)}>
               <input
                 type="email"
@@ -67,9 +64,6 @@ const SignIn = () => {
               <button type="submit">Sign In</button>
             </form>
           </div>
-          <p>
-            Dont't have an account? <NavLink to="/signup">Sign Up</NavLink>
-          </p>
         </div>
       </div>
     </>

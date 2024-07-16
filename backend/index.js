@@ -44,6 +44,13 @@ app.use('/contact', require("./routes/contact"), (req,res)=>{
   console.log("Order data failed")
 })
 
+// ------------------------------------------------------
+//    ADMIN ROUTES
+
+app.use('/login',require('./routes/createadmin'))
+
+app.use('/getuser',require('./routes/createuser'))
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
