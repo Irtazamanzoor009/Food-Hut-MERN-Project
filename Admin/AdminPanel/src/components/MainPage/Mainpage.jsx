@@ -9,8 +9,8 @@ const Mainpage = () => {
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showViewItemsModal, setShowViewItemsModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [showSuccessMessage, setShowSuccessMessage] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState([]);
   const [foodCategory, setfoodCategory] = useState([]);
   const [foodItem, setfoodItem] = useState([]);
@@ -52,27 +52,46 @@ const Mainpage = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const CategoryFormSubmit = (data) => {
+  const CategoryFormSubmit = async (data) => {
+    console.log("helel");
+    setIsLoading(true);
+    setShowSuccessMessage(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setShowSuccessMessage(false);
+    }, 1000);
+    console.log(data);
+  };
+
+  const handleItemSubmit = (data) => {
     console.log(data);
   };
 
   const handleCloseAddCategoryModal = () => {
     setShowAddCategoryModal(false);
     setOptions([]);
+    reset();
   };
 
   const LoadData = async (data) => {
-    const response = await fetch("http://localhost:3001/food/fooditems", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-    });
-    const json = await response.json();
-    setfoodItem(json[0]);
-    setfoodCategory(json[1]);
+    try {
+      const response = await fetch("http://localhost:3001/addfood/getfood", {
+        method: "GET",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await response.json();
+
+      setfoodItem(json[0]);
+      setfoodCategory(json[1]);
+    } catch {
+      console.log("Internal Server Error at UI");
+    }
   };
 
   useEffect(() => {
+    setfoodItem([]);
+    setfoodCategory([]);
     LoadData();
   }, []);
 
@@ -123,7 +142,9 @@ const Mainpage = () => {
                         <div className="boxes-contents">
                           <p>Category Name: {item.CategoryName}</p>
 
-                          <p>Total Items: {getCountByCategory(item.CategoryName)}</p>
+                          <p>
+                            Total Items: {getCountByCategory(item.CategoryName)}
+                          </p>
                         </div>
                         <div className="boxes-buttons">
                           <button
@@ -135,7 +156,9 @@ const Mainpage = () => {
                           </button>
                           <button
                             className="mainpage-btn"
-                            onClick={() => openViewItemsModal(item.CategoryName)}
+                            onClick={() =>
+                              openViewItemsModal(item.CategoryName)
+                            }
                           >
                             <i className="fa-sharp fa-solid fa-eye"></i>{" "}
                             <p>View Items</p>
@@ -154,19 +177,26 @@ const Mainpage = () => {
                         <div key={selectedcat._id} className="mainpage-boxes">
                           <div className="boxes-contents">
                             <p>Category Name: {selectedcat.CategoryName}</p>
-                            <p>Total Items: {getCountByCategory(selectedcat.CategoryName)}</p>
+                            <p>
+                              Total Items:{" "}
+                              {getCountByCategory(selectedcat.CategoryName)}
+                            </p>
                           </div>
                           <div className="boxes-buttons">
                             <button
                               className="mainpage-btn top-btn"
-                              onClick={() => openAddItemModal(selectedcat.CategoryName)}
+                              onClick={() =>
+                                openAddItemModal(selectedcat.CategoryName)
+                              }
                             >
                               <i className="fa-solid fa-plus"></i>{" "}
                               <p>Add New Item</p>
                             </button>
                             <button
                               className="mainpage-btn"
-                              onClick={() => openViewItemsModal(selectedcat.CategoryName)}
+                              onClick={() =>
+                                openViewItemsModal(selectedcat.CategoryName)
+                              }
                             >
                               <i className="fa-sharp fa-solid fa-eye"></i>{" "}
                               <p>View Items</p>
@@ -180,6 +210,7 @@ const Mainpage = () => {
       </div>
 
       <Modal
+        isitems={false}
         show={showAddCategoryModal}
         onClose={handleCloseAddCategoryModal}
         title="Add New Category"
@@ -192,18 +223,17 @@ const Mainpage = () => {
           <div className="red msgs">{errors.categoryName.message}</div>
         )}
         <form onSubmit={handleSubmit(CategoryFormSubmit)}>
-          <label>
-            <input
-              type="text"
-              placeholder="Enter New Category"
-              {...register("categoryName", {
-                required: {
-                  value: true,
-                  message: "Please Enter Category Name",
-                },
-              })}
-            />
-          </label>
+          <input
+            type="text"
+            placeholder="Enter New Category"
+            {...register("categoryName", {
+              required: {
+                value: true,
+                message: "Please Enter Category Name",
+              },
+            })}
+          />
+
           <div className="options-container">
             <label>Options:</label>
             {options.map((option, index) => (
@@ -231,6 +261,7 @@ const Mainpage = () => {
       </Modal>
 
       <Modal
+        isitems={false}
         show={showAddItemModal}
         onClose={() => setShowAddItemModal(false)}
         title="Add New Item"
@@ -239,7 +270,7 @@ const Mainpage = () => {
         {showSuccessMessage && (
           <div className="green msgs alerts">Item Added Up Successfully</div>
         )}
-        <form>
+        <form onSubmit={handleSubmit(handleItemSubmit)}>
           <label>Category Name: {selectedCategory}</label>
           <input
             type="text"
@@ -258,7 +289,7 @@ const Mainpage = () => {
           <input
             type="text"
             placeholder="Enter Item Desctiption"
-            {...register("img", {
+            {...register("description", {
               required: {
                 value: true,
                 message: "Please Enter Item Description",
@@ -273,13 +304,73 @@ const Mainpage = () => {
       </Modal>
 
       <Modal
+        isitems={true}
         show={showViewItemsModal}
         onClose={() => setShowViewItemsModal(false)}
         title="View Items"
       >
-        {/* View Items Content */}
-        CategoryName: {selectedCategory}
-        <p>List of items...</p>
+        <h3>CategoryName: {selectedCategory}</h3>
+
+        <div>
+          <div className="users-container view-items-container">
+            <div className="mainpage-cart-items">
+              <div className="table-contents">
+                <table>
+                  <thead>
+                    <tr>
+                      <th className="mainpage-Image">Image</th>
+                      <th className="mainpage-Name">Name</th>
+                      <th className="mainpage-options">Options</th>
+                      <th className="mainpage-status">Status</th>
+                      <th className="mainpage-update">Update</th>
+                      <th className="mainpage-extra"></th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <div className="mainpage-body-content">
+                <table>
+                  <tbody>
+                    {foodItem
+                      .filter((item) => item.CategoryName === selectedCategory)
+                      .map((filteredFoodItem) => {
+                        return (
+                          <tr key={filteredFoodItem._id} className="last-row">
+                            <td className="mainpage-Image">
+                              <img
+                                src={filteredFoodItem.img}
+                                alt={filteredFoodItem.name}
+                              />
+                            </td>
+                            <td className="mainpage-Name">
+                              {filteredFoodItem.name}
+                            </td>
+                            <td className="mainpage-options">
+                              {filteredFoodItem.options.map((option, index) => (
+                                <div key={index}>
+                                  {Object.keys(option).map((key) => (
+                                    <div key={key}>
+                                      {key}: {option[key]}
+                                    </div>
+                                  ))}
+                                </div>
+                              ))}
+                            </td>
+                            <td className="mainpage-status">
+                              <button>In Active</button>
+                            </td>
+                            <td className="mainpage-update">
+                              <button>Update</button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </Modal>
     </div>
   );

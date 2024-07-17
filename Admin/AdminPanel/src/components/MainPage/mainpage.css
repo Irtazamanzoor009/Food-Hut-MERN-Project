@@ -113,6 +113,14 @@
   max-width: 80%;
 }
 
+.Modal2{
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 1000px;
+  max-width: 80%;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -132,6 +140,8 @@
 
 .modal-body {
   margin-top: 10px;
+  /* overflow-y: auto; */
+  /* height: 70vh; */
 }
 
 .alerts {
@@ -204,5 +214,70 @@ form button:hover {
 
 .option-field button:hover {
   background-color: darkred;
+}
+
+.mainpage-body-content table td img
+{
+  height: 60px;
+  width: 100px;
+}
+
+.mainpage-body-content table tbody tr td
+{
+  padding: 8px;
+  /* background-color: red; */
+}
+
+.mainpage-Image
+{
+  /* background-color: red; */
+  width: 20%;
+}
+
+.mainpage-Name
+{
+  /* background-color: orange; */
+  width: 20%;
+}
+
+.mainpage-options
+{
+  /* background-color: #45a049; */
+  width: 20%;
+}
+
+.mainpage-status
+{
+  /* background-color: aqua; */
+  width: 15%;
+}
+
+.mainpage-update
+{
+  width: 15%;
+  /* background-color: blueviolet; */
+}
+
+.mainpage-extra
+{
+  width: 0%;
+}
+
+.mainpage-update button
+{
+  background-color: #008eff;
+  color: white;
+  padding: 10px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-left: 25px;
+}
+.mainpage-update button:hover
+{
+  background-color: #0063b2
 }
 

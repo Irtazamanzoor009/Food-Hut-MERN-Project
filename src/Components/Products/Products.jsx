@@ -15,8 +15,8 @@ const Products = () => {
   }, []);
 
   const LoadData = async (data) => {
-    const response = await fetch("http://localhost:3001/food/fooditems", {
-      method: "POST",
+    const response = await fetch("http://localhost:3001/addfood/getfood", {
+      method: "GET",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
     });

@@ -53,6 +53,7 @@ app.use('/getuser',require('./routes/createuser'))
 
 app.use('/getcontacts',require('./routes/contact'))
 
+app.use('/addfood',require('./routes/food'))
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
