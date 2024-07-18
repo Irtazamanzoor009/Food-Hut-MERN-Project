@@ -79,4 +79,16 @@ router.get("/getCatOptions/:catName", async (req, res) => {
   }
 });
 
+router.put("/updateFoodItemStauts/:id", async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    await foodItem.findByIdAndUpdate(id, { status: status });
+    res.status(200).send({ message: "Food status updated successfully" });
+  } catch (error) {
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

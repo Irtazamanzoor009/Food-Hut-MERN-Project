@@ -212,6 +212,8 @@ const Mainpage = () => {
     }
   };
 
+  // ------------------- Item Form Ended ----------------------
+
   const openAddItemModal = (category) => {
     setSelectedCategory(category);
     setShowAddItemModal(true);
@@ -228,17 +230,6 @@ const Mainpage = () => {
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
-
-  // const CategoryFormSubmit = async (data) => {
-  //   console.log("helel");
-  //   setIsLoading(true);
-  //   setShowSuccessMessage(true);
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //     setShowSuccessMessage(false);
-  //   }, 1000);
-  //   console.log(data);
-  // };
 
   const handleCloseAddCategoryModal = () => {
     setShowAddCategoryModal(false);
@@ -288,6 +279,31 @@ const Mainpage = () => {
 
   const getCountByCategory = (categoryName) => {
     return foodItem.filter((item) => item.CategoryName === categoryName).length;
+  };
+
+  const updateItemStatus = async (itemId, newStatus) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/addfood/updateFoodItemStauts/${itemId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
+
+      if (response.ok) {
+        setfoodItem((previtem) =>
+          previtem.map((item) =>
+            item._id === itemId ? { ...item, status: newStatus } : item
+          )
+        );
+      } else {
+        console.log("Failed to update user status");
+      }
+    } catch (error) {
+      console.log("Internal Server Error at UI");
+    }
   };
 
   return (
@@ -555,9 +571,23 @@ const Mainpage = () => {
                                 </div>
                               ))}
                             </td>
-                            <td className="mainpage-status">
-                              <button>In Active</button>
-                            </td>
+                            <td className="status">
+                          {filteredFoodItem.status === "true" ? (
+                            <button
+                              onClick={() => updateItemStatus(filteredFoodItem._id, "false")}
+                              className="btns btn-remove"
+                            >
+                              <p className="dis-btn">Disable</p>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => updateItemStatus(filteredFoodItem._id, "true")}
+                              className="btns btn-enable"
+                            >
+                              <p className="dis-btn">Enable</p>
+                            </button>
+                          )}
+                        </td>
                             <td className="mainpage-update">
                               <button>Update</button>
                             </td>

@@ -71,7 +71,7 @@ const Products = () => {
                                 item.CategoryName === Cat.CategoryName &&
                                 item.name
                                   .toLowerCase()
-                                  .includes(searchvalue.toLowerCase())
+                                  .includes(searchvalue.toLowerCase()) && item.status === "true"
                             )
                             .map((filteredItem) => {
                               return (
