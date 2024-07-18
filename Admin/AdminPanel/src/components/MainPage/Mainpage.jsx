@@ -11,28 +11,205 @@ const Mainpage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [options, setOptions] = useState([]);
   const [foodCategory, setfoodCategory] = useState([]);
   const [foodItem, setfoodItem] = useState([]);
   const [selectedCategoryDropDown, setSelectedCategoryDropDown] =
     useState("All");
+  const [serverError, setserverError] = useState("");
 
-  const addOptionField = () => {
-    setOptions([...options, ""]);
-  };
+  // -------------------------- Category form submission data
+  const [CategoryFormData, setCategoryFormData] = useState({
+    CategoryName: "",
+    options: [],
+  });
 
-  const EmptyOptionsField = () => {
-    setOptions([]);
-  };
-
-  const removeOptionField = (index) => {
-    setOptions(options.filter((_, i) => i !== index));
+  const CategoryhandleChange = (e) => {
+    const { name, value } = e.target;
+    setCategoryFormData({
+      ...CategoryFormData,
+      [name]: value,
+    });
   };
 
   const handleOptionChange = (index, event) => {
-    const newOptions = [...options];
+    const newOptions = [...CategoryFormData.options];
     newOptions[index] = event.target.value;
-    setOptions(newOptions);
+    setCategoryFormData({
+      ...CategoryFormData,
+      options: newOptions,
+    });
+  };
+
+  const addOptionField = () => {
+    setCategoryFormData({
+      ...CategoryFormData,
+      options: [...CategoryFormData.options, ""],
+    });
+  };
+
+  const removeOptionField = (index) => {
+    const newOptions = [...CategoryFormData.options];
+    newOptions.splice(index, 1);
+    setCategoryFormData({
+      ...CategoryFormData,
+      options: newOptions,
+    });
+  };
+  const CategoryhandleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setserverError("");
+    // setShowSuccessMessage(true);
+    console.log("Form data submitted:", CategoryFormData);
+    try {
+      const response = await fetch(
+        "http://localhost:3001/addfood/addCategory",
+        {
+          method: "POST",
+          body: JSON.stringify(CategoryFormData),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const result = await response.json();
+      if (!result.success) {
+        if (result.error === "Category Already Exists") {
+          setserverError(result.error);
+        } else {
+          setserverError("An error occurred. Please try again.");
+        }
+        setIsLoading(false);
+        setTimeout(() => {
+          setserverError("");
+        }, 1000);
+        return;
+      }
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+
+      setCategoryFormData({
+        CategoryName: "",
+        options: [],
+      });
+
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        reset();
+      }, 1000);
+      LoadData();
+    } catch (error) {
+      console.log("Internal Server error at UI", error);
+    }
+  };
+
+  // _--------------------Category Fom Ended ------------------
+
+  //  -------------------- Item Form Functions ------------------
+
+  const [categoryOptions, setCategoryOptions] = useState([]);
+
+  const [ItemFormData, setItemFormData] = useState({
+    CategoryName: "",
+    ItemName: "",
+    imgURL: "",
+    options: [{}],
+    description: "",
+  });
+
+  const ItemhandleChange = (e) => {
+    const { name, value } = e.target;
+    setItemFormData({
+      ...ItemFormData,
+      [name]: value,
+    });
+  };
+
+  const handleOptionChangeInItem = (optionType, value) => {
+    const updatedOptions = { ...ItemFormData.options[0], [optionType]: value };
+    setItemFormData({
+      ...ItemFormData,
+      options: [updatedOptions],
+    });
+  };
+
+  const handleItemSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setserverError("");
+    try {
+      const response = await fetch("http://localhost:3001/addfood/addItem", {
+        method: "POST",
+        body: JSON.stringify(ItemFormData),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const result = await response.json();
+      if (!result.success) {
+        if (result.error === "Category Already Exists") {
+          setserverError(result.error);
+        } else {
+          setserverError("An error occurred. Please try again.");
+        }
+        setIsLoading(false);
+        setTimeout(() => {
+          setserverError("");
+        }, 1000);
+        return;
+      }
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+
+      setItemFormData({
+        CategoryName: "",
+        ItemName: "",
+        imgURL: "",
+        options: [{}],
+        description: "",
+      });
+
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        reset();
+      }, 1000);
+      LoadData();
+    } catch (error) {
+      console.log("Internal Server error at UI", error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedCategory) {
+      GetOptionsOfCategory(selectedCategory);
+    }
+  }, [selectedCategory]);
+
+  const GetOptionsOfCategory = async (categoryName) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/addfood/getCatOptions/${categoryName}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          // body: JSON.stringify({ status: newStatus }),
+        }
+      );
+
+      const result = await response.json();
+      setCategoryOptions(result.options);
+      setItemFormData((data) => ({
+        ...data,
+        CategoryName: categoryName,
+      }));
+      // console.log(result.options)
+    } catch {
+      console.log("Internal Server Error at UI");
+    }
   };
 
   const openAddItemModal = (category) => {
@@ -52,25 +229,34 @@ const Mainpage = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const CategoryFormSubmit = async (data) => {
-    console.log("helel");
-    setIsLoading(true);
-    setShowSuccessMessage(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setShowSuccessMessage(false);
-    }, 1000);
-    console.log(data);
-  };
-
-  const handleItemSubmit = (data) => {
-    console.log(data);
-  };
+  // const CategoryFormSubmit = async (data) => {
+  //   console.log("helel");
+  //   setIsLoading(true);
+  //   setShowSuccessMessage(true);
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //     setShowSuccessMessage(false);
+  //   }, 1000);
+  //   console.log(data);
+  // };
 
   const handleCloseAddCategoryModal = () => {
     setShowAddCategoryModal(false);
-    setOptions([]);
-    reset();
+    setCategoryFormData({
+      CategoryName: "",
+      options: [],
+    });
+  };
+
+  const handleCloseAddItemModel = () => {
+    setShowAddItemModal(false);
+    setItemFormData({
+      CategoryName: "",
+      ItemName: "",
+      imgURL: "",
+      options: [{}],
+      description: "",
+    });
   };
 
   const LoadData = async (data) => {
@@ -219,27 +405,24 @@ const Mainpage = () => {
         {showSuccessMessage && (
           <div className="green msgs alerts">Category Added Successfully</div>
         )}
-        {errors.categoryName && (
-          <div className="red msgs">{errors.categoryName.message}</div>
-        )}
-        <form onSubmit={handleSubmit(CategoryFormSubmit)}>
+        {serverError && <div className="red msgs alerts">{serverError}</div>}
+        <form onSubmit={CategoryhandleSubmit}>
           <input
             type="text"
             placeholder="Enter New Category"
-            {...register("categoryName", {
-              required: {
-                value: true,
-                message: "Please Enter Category Name",
-              },
-            })}
+            name="CategoryName"
+            value={CategoryFormData.CategoryName}
+            onChange={CategoryhandleChange}
+            required
           />
 
           <div className="options-container">
             <label>Options:</label>
-            {options.map((option, index) => (
+            {CategoryFormData.options.map((option, index) => (
               <div key={index} className="option-field">
                 <input
                   type="text"
+                  name={`option-${index}`}
                   value={option}
                   onChange={(event) => handleOptionChange(index, event)}
                   placeholder={`Option ${index + 1}`}
@@ -263,38 +446,54 @@ const Mainpage = () => {
       <Modal
         isitems={false}
         show={showAddItemModal}
-        onClose={() => setShowAddItemModal(false)}
+        onClose={handleCloseAddItemModel}
         title="Add New Item"
       >
         {/* Add Item Form */}
         {showSuccessMessage && (
           <div className="green msgs alerts">Item Added Up Successfully</div>
         )}
-        <form onSubmit={handleSubmit(handleItemSubmit)}>
+        {serverError && <div className="red msgs alerts">{serverError}</div>}
+
+        <form onSubmit={handleItemSubmit}>
           <label>Category Name: {selectedCategory}</label>
           <input
             type="text"
             placeholder="Enter Name"
-            {...register("name", {
-              required: { value: true, message: "Please Enter Item Name" },
-            })}
+            name="ItemName"
+            value={ItemFormData.ItemName}
+            onChange={ItemhandleChange}
+            required
           />
           <input
             type="text"
             placeholder="Enter Img URL"
-            {...register("img", {
-              required: { value: true, message: "Please Enter Img URL" },
-            })}
+            name="imgURL"
+            value={ItemFormData.imgURL}
+            onChange={ItemhandleChange}
+            required
           />
+          {categoryOptions.map((option, index) => (
+            <div key={index}>
+              <label>{option}</label>
+              <input
+                type="text"
+                placeholder={`Enter ${option} price`}
+                value={ItemFormData.options[0][option] || ""}
+                onChange={(e) =>
+                  handleOptionChangeInItem(option, e.target.value)
+                }
+                required
+              />
+            </div>
+          ))}
           <input
             type="text"
             placeholder="Enter Item Desctiption"
-            {...register("description", {
-              required: {
-                value: true,
-                message: "Please Enter Item Description",
-              },
-            })}
+            name="description"
+            value={ItemFormData.description}
+            onChange={ItemhandleChange}
+            required
           />
           <button type="submit">
             Add Item

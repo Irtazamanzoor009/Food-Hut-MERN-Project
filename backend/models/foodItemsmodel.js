@@ -16,6 +16,7 @@ const FoodItemSchema = new Schema({
   img: { type: String, required: true},
   options: {type: Array, required:true},
   description: { type: String, required: true },
+  status:{type:String, required:true}
 });
 
 module.exports = mongoose.model("food_items", FoodItemSchema);

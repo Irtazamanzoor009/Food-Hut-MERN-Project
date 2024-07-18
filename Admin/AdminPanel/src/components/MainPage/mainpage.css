@@ -281,3 +281,9 @@ form button:hover {
   background-color: #0063b2
 }
 
+.center-message
+{
+  display: flex;
+  justify-content: center;
+}
+
