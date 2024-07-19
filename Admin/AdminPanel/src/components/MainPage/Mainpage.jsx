@@ -135,13 +135,68 @@ const Mainpage = () => {
     });
   };
 
+  // const handleItemSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   setserverError("");
+  //   try {
+  //     const response = await fetch("http://localhost:3001/addfood/addItem", {
+  //       method: "POST",
+  //       body: JSON.stringify(ItemFormData),
+  //       headers: { "Content-Type": "application/json" },
+  //     });
+
+  //     const result = await response.json();
+  //     if (!result.success) {
+  //       if (result.error === "Category Already Exists") {
+  //         setserverError(result.error);
+  //       } else {
+  //         setserverError("An error occurred. Please try again.");
+  //       }
+  //       setIsLoading(false);
+  //       setTimeout(() => {
+  //         setserverError("");
+  //       }, 1000);
+  //       return;
+  //     }
+
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 300);
+
+  //     setItemFormData({
+  //       CategoryName: "",
+  //       ItemName: "",
+  //       imgURL: "",
+  //       options: [{}],
+  //       description: "",
+  //     });
+
+  //     setShowSuccessMessage(true);
+  //     setTimeout(() => {
+  //       setShowSuccessMessage(false);
+  //       reset();
+  //     }, 1000);
+  //     LoadData();
+  //   } catch (error) {
+  //     console.log("Internal Server error at UI", error);
+  //   }
+  // };
+
   const handleItemSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setserverError("");
+
+    const url = itemToUpdate
+      ? `http://localhost:3001/addfood/updateFoodItem/${itemToUpdate._id}`
+      : "http://localhost:3001/addfood/addItem";
+
+    const method = itemToUpdate ? "PUT" : "POST";
+
     try {
-      const response = await fetch("http://localhost:3001/addfood/addItem", {
-        method: "POST",
+      const response = await fetch(url, {
+        method: method,
         body: JSON.stringify(ItemFormData),
         headers: { "Content-Type": "application/json" },
       });
@@ -150,7 +205,17 @@ const Mainpage = () => {
       if (!result.success) {
         if (result.error === "Category Already Exists") {
           setserverError(result.error);
-        } else {
+        }
+        else if(result.message === "Food Item Updated Successfullty")
+        {
+          setShowSuccessMessage(true)
+          setTimeout(() => {
+            setShowSuccessMessage(false);
+            reset();
+          }, 1000);
+          LoadData()
+        }
+         else {
           setserverError("An error occurred. Please try again.");
         }
         setIsLoading(false);
@@ -171,7 +236,7 @@ const Mainpage = () => {
         options: [{}],
         description: "",
       });
-
+      setItemToUpdate(null);
       setShowSuccessMessage(true);
       setTimeout(() => {
         setShowSuccessMessage(false);
@@ -214,8 +279,29 @@ const Mainpage = () => {
 
   // ------------------- Item Form Ended ----------------------
 
-  const openAddItemModal = (category) => {
+  const [itemToUpdate, setItemToUpdate] = useState(null);
+
+  const openAddItemModal = (category, item = null) => {
     setSelectedCategory(category);
+    if (item) {
+      setItemToUpdate(item);
+      setItemFormData({
+        CategoryName: item.CategoryName,
+        ItemName: item.name,
+        imgURL: item.img,
+        options: item.options,
+        description: item.description,
+      });
+    } else {
+      setItemToUpdate(null);
+      setItemFormData({
+        CategoryName: category,
+        ItemName: "",
+        imgURL: "",
+        options: [{}],
+        description: "",
+      });
+    }
     setShowAddItemModal(true);
   };
 
@@ -251,6 +337,7 @@ const Mainpage = () => {
   };
 
   const LoadData = async (data) => {
+    setIsLoading(true)
     try {
       const response = await fetch("http://localhost:3001/addfood/getfood", {
         method: "GET",
@@ -261,6 +348,7 @@ const Mainpage = () => {
 
       setfoodItem(json[0]);
       setfoodCategory(json[1]);
+      setIsLoading(false)
     } catch {
       console.log("Internal Server Error at UI");
     }
@@ -310,7 +398,9 @@ const Mainpage = () => {
     <div>
       <Navbar />
       <div className="mainpage-container">
+      
         <div className="mainpage-wraper">
+          {isLoading && <div>Loading</div>}
           <div className="upper-btns">
             <select onChange={(e) => handleSetCategory(e)}>
               <option value="All">All</option>
@@ -336,6 +426,7 @@ const Mainpage = () => {
             </button>
           </div>
           <div className="category-box">
+          
             {foodCategory.length > 0 &&
               (selectedCategoryDropDown === "All"
                 ? foodCategory.map((item) => {
@@ -463,11 +554,15 @@ const Mainpage = () => {
         isitems={false}
         show={showAddItemModal}
         onClose={handleCloseAddItemModel}
-        title="Add New Item"
+        title={itemToUpdate ? "Update Item" : "Add New Item"}
       >
         {/* Add Item Form */}
         {showSuccessMessage && (
-          <div className="green msgs alerts">Item Added Up Successfully</div>
+          <div className="green msgs alerts">
+            {itemToUpdate
+              ? "Item Updated Successfully"
+              : "Item Added Successfully"}
+          </div>
         )}
         {serverError && <div className="red msgs alerts">{serverError}</div>}
 
@@ -512,7 +607,7 @@ const Mainpage = () => {
             required
           />
           <button type="submit">
-            Add Item
+            {itemToUpdate ? "Update Item" : "Add Item"}
             {isLoading && <i className="fa-solid fa-spinner fa-spin"></i>}
           </button>
         </form>
@@ -572,24 +667,43 @@ const Mainpage = () => {
                               ))}
                             </td>
                             <td className="status">
-                          {filteredFoodItem.status === "true" ? (
-                            <button
-                              onClick={() => updateItemStatus(filteredFoodItem._id, "false")}
-                              className="btns btn-remove"
-                            >
-                              <p className="dis-btn">Disable</p>
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => updateItemStatus(filteredFoodItem._id, "true")}
-                              className="btns btn-enable"
-                            >
-                              <p className="dis-btn">Enable</p>
-                            </button>
-                          )}
-                        </td>
+                              {filteredFoodItem.status === "true" ? (
+                                <button
+                                  onClick={() =>
+                                    updateItemStatus(
+                                      filteredFoodItem._id,
+                                      "false"
+                                    )
+                                  }
+                                  className="btns btn-remove"
+                                >
+                                  <p className="dis-btn">Disable</p>
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    updateItemStatus(
+                                      filteredFoodItem._id,
+                                      "true"
+                                    )
+                                  }
+                                  className="btns btn-enable"
+                                >
+                                  <p className="dis-btn">Enable</p>
+                                </button>
+                              )}
+                            </td>
                             <td className="mainpage-update">
-                              <button>Update</button>
+                              <button
+                                onClick={() =>
+                                  openAddItemModal(
+                                    filteredFoodItem.CategoryName,
+                                    filteredFoodItem
+                                  )
+                                }
+                              >
+                                Update
+                              </button>
                             </td>
                           </tr>
                         );

@@ -7,7 +7,7 @@ const Modal = ({isitems, show, onClose, title, children }) => {
   }
   
   return (
-    <div className="modal-overlay">
+    <div className={isitems ? 'modal-overlay modal-overlay-set-Index' : 'modal-overlay modal-overlay-set-Index-2'}>
       <div className={isitems ? 'Modal2' : 'modal'}>
         <div className="modal-header">
           <h2>{title}</h2>

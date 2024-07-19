@@ -38,12 +38,7 @@ const Navbar = () => {
               <li>
                 <NavLink to="/users">View Users</NavLink>
               </li>
-              <li>
-                <NavLink to="/mainpage">View Products</NavLink>
-              </li>
-              <li>
-                <NavLink to="/mainpage">View Admins</NavLink>
-              </li>
+              
             </ul>
           </div>
           <div className="auth-buttons">

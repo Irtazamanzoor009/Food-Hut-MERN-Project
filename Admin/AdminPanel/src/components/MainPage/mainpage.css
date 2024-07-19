@@ -101,8 +101,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modal-overlay-set-Index
+{
+  z-index: 1000;
+}
+
+.modal-overlay-set-Index-2
+{
+  z-index: 1005;
 }
 
 .modal {
@@ -129,6 +138,18 @@
 
 .modal-header button {
   font-size: 35px;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-header button:hover
+{
+  background-color: rgb(201, 215, 228);
+  border-radius: 20px;
+  /* width: 50px; */
 }
 
 .modal-close-btn {

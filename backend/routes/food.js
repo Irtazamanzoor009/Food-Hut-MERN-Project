@@ -91,4 +91,21 @@ router.put("/updateFoodItemStauts/:id", async (req, res) => {
   }
 });
 
+router.put("/updateFoodItem/:id", async(req,res)=>{
+  const {id} = req.params
+  const itemname = req.body.ItemName;
+  const url = req.body.imgURL;
+  const options = req.body.options;
+  const desc = req.body.description;
+
+  try
+  {
+    await foodItem.findByIdAndUpdate(id, {name: itemname, img: url, options: options, description: desc})
+    res.status(200).send({message: "Food Item Updated Successfullty"})
+  }
+  catch(error){
+    res.status(500).send({message:"Internal Server Error"})
+  }
+})
+
 module.exports = router;
